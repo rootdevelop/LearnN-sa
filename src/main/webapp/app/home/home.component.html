@@ -3,7 +3,7 @@
         <span class="hipster img-fluid rounded"></span>
     </div>
     <div class="col-md-9">
-        <h1 class="display-4">Welcome to Learnn</h1>
+        <h1 class="display-4">Welcome to LearnN</h1>
         <p class="lead"></p>
 
         <div [ngSwitch]="isAuthenticated()">
@@ -14,7 +14,7 @@
 
             <div class="alert alert-warning" *ngSwitchCase="false">
                 <span>Please </span>
-                <a class="alert-link" (click)="login()">sign in</a> to continue.
+                <a class="alert-link" (click)="login()">sign in</a> to continue. Or <a class="alert-link" routerLink="/register">register</a> a new account.
             </div>
         </div>
     </div>

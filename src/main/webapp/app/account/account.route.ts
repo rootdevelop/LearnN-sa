@@ -10,6 +10,7 @@ import {
 } from './';
 
 const ACCOUNT_ROUTES = [
+    registerRoute,
     activateRoute,
     passwordRoute,
     passwordResetFinishRoute,

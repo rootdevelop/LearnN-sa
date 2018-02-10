@@ -13,7 +13,7 @@
                     "pattern": "Uw login kan alleen kleine letters en cijfers bevatten.."
                 }
             },
-            "success": "<strong>Registratie opgeslaan!</strong> Gelieve uw email te controlleren ter bevestiging.",
+            "success": "<strong>Registratie succesvol!</strong> Wacht tot de trainer uw account geactiveerd heeft.",
             "error": {
                 "fail": "<strong>Registratie mislukt!</strong> Probeer het later opnieuw.",
                 "userexists": "<strong>Login naam is al geregistreerd!</strong> Gelieve een andere te kiezen.",
