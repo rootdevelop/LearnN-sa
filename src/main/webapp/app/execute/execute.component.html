@@ -14,8 +14,8 @@
 
             </div>
             <div class="col-md-10">
-                <label style="color: #333333;" for="answer">answer:</label>
-                <input type="text" class="form-control" id="answer" (click)="clearErrorMsg()" [(ngModel)]="givenAnswer">
+                <label style="color: #333333;" for="answer">Enter your answer below:</label>
+                <input type="text" class="form-control" id="answer" (click)="clearErrorMsg()" [(ngModel)]="givenAnswer" required="required">
                 <br>
                 <p style="color: red">{{errorMsg}}</p>
                 <p *ngIf="success || lastQuestion" style="color: green">Good job! You solved this in {{savedTime}} seconds</p>

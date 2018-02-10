@@ -3,24 +3,24 @@
     "learnNApp": {
         "activityResult" : {
             "home": {
-                "title": "Activity Results",
+                "title": "Resultaten",
                 "createLabel": "Maak een nieuwe Activity Result",
                 "createOrEditLabel": "Maak of wijzig een Activity Result",
-                "search": "Search for Activity Result"
+                "search": "Zoek naar een Resultaat"
             },
             "created": "A new Activity Result is created with identifier {{ param }}",
             "updated": "A Activity Result is updated with identifier {{ param }}",
             "deleted": "A Activity Result is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Bent u zeker dat u Activity Result {{ id }} wilt verwijderen?"
+                "question": "Bent u zeker dat u dit Resultaat {{ id }} wilt verwijderen?"
             },
             "detail": {
-                "title": "Activity Result"
+                "title": "Resultaat"
             },
-            "user": "User",
-            "challengeId": "Challenge Id",
-            "result": "Result",
-            "timeSpent": "Time Spent",
+            "user": "Gebruiker",
+            "challengeId": "Uitdaging",
+            "result": "Resultaat",
+            "timeSpent": "Gespendeerde tijd (in seconden)",
             "timestamp": "Timestamp"
         }
     }

@@ -1,12 +1,6 @@
 <div>
     <h2>
         <span jhiTranslate="learnNApp.activityResult.home.title">Activity Results</span>
-        <button class="btn btn-primary float-right jh-create-entity create-activity-result" [routerLink]="['/', { outlets: { popup: ['activity-result-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="learnNApp.activityResult.home.createLabel">
-            Create new Activity Result
-            </span>
-        </button>
     </h2>
     <jhi-alert></jhi-alert>
     <div class="row">
@@ -29,9 +23,9 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <!--<th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="user"><span jhiTranslate="learnNApp.activityResult.user">User</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="challengeId"><span jhiTranslate="learnNApp.activityResult.challengeId">Challenge Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="challengeId"><span jhiTranslate="learnNApp.activityResult.challengeId">Challenge</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="result"><span jhiTranslate="learnNApp.activityResult.result">Result</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="timeSpent"><span jhiTranslate="learnNApp.activityResult.timeSpent">Time Spent</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="timestamp"><span jhiTranslate="learnNApp.activityResult.timestamp">Timestamp</span> <span class="fa fa-sort"></span></th>
@@ -40,7 +34,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let activityResult of activityResults ;trackBy: trackId">
-                <td><a [routerLink]="['../activity-result', activityResult.id ]">{{activityResult.id}}</a></td>
+                <!--<td><a [routerLink]="['../activity-result', activityResult.id ]">{{activityResult.id}}</a></td>-->
                 <td>{{activityResult.user}}</td>
                 <td><a routerLink="/challenge/{{activityResult.challengeId}}">{{activityResult.challengeId}}</a></td>
                 <td>{{activityResult.result}}</td>

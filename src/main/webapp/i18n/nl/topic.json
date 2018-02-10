@@ -3,22 +3,22 @@
     "learnNApp": {
         "topic" : {
             "home": {
-                "title": "Topics",
-                "createLabel": "Maak een nieuwe Topic",
-                "createOrEditLabel": "Maak of wijzig een Topic",
-                "search": "Search for Topic"
+                "title": "Onderwerpen",
+                "createLabel": "Maak een nieuwe Onderwerp",
+                "createOrEditLabel": "Maak of wijzig een Onderwerp",
+                "search": "Zoek naar een Onderwerp"
             },
-            "created": "A new Topic is created with identifier {{ param }}",
-            "updated": "A Topic is updated with identifier {{ param }}",
-            "deleted": "A Topic is deleted with identifier {{ param }}",
+            "created": "Een nieuw Onderwerp is aangemaakt met identifier {{ param }}",
+            "updated": "Een Onderwerp is geupdate met identifier {{ param }}",
+            "deleted": "Een Onderwerp is verwijdert met identifier {{ param }}",
             "delete": {
-                "question": "Bent u zeker dat u Topic {{ id }} wilt verwijderen?"
+                "question": "Bent u zeker dat u Onderwerp {{ id }} wilt verwijderen?"
             },
             "detail": {
-                "title": "Topic"
+                "title": "Onderwerp"
             },
-            "name": "Name",
-            "description": "Description"
+            "name": "Naam",
+            "description": "Omschrijving"
         }
     }
 }

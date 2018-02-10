@@ -3,26 +3,26 @@
     "learnNApp": {
         "challenge" : {
             "home": {
-                "title": "Challenges",
-                "createLabel": "Maak een nieuwe Challenge",
-                "createOrEditLabel": "Maak of wijzig een Challenge",
-                "search": "Search for Challenge"
+                "title": "Uitdagingen",
+                "createLabel": "Maak een nieuwe Uitdaging",
+                "createOrEditLabel": "Maak of wijzig een Uitdaging",
+                "search": "Search naar een Uitdaging"
             },
-            "created": "A new Challenge is created with identifier {{ param }}",
-            "updated": "A Challenge is updated with identifier {{ param }}",
-            "deleted": "A Challenge is deleted with identifier {{ param }}",
+            "created": "Een nieuwe Uitdaging is aangemaakt met identifier {{ param }}",
+            "updated": "Een Uitdaging is geupdate met identifier {{ param }}",
+            "deleted": "Een Uitdaging is verwijdert met identifier {{ param }}",
             "delete": {
-                "question": "Bent u zeker dat u Challenge {{ id }} wilt verwijderen?"
+                "question": "Bent u zeker dat u Uitdaging {{ id }} wilt verwijderen?"
             },
             "detail": {
-                "title": "Challenge"
+                "title": "Uitdaging"
             },
-            "question": "Question",
-            "answer": "Answer",
-            "language": "Language",
-            "active": "Active",
+            "question": "Vraag",
+            "answer": "Antwoord",
+            "language": "Taal",
+            "active": "Actief",
             "snippet": "Snippet",
-            "topic": "Topic"
+            "topic": "Onderwerp"
         }
     }
 }

@@ -12,7 +12,7 @@ const LAYOUT_ROUTES = [
         component: ExecuteComponent,
         data: {
             authorities: ['ROLE_USER', 'ROLE_ADMIN'],
-            pageTitle: 'title'
+            pageTitle: 'learnNApp.challenge.home.title'
         },
         canActivate: [UserRouteAccessService]
     },
@@ -21,7 +21,7 @@ const LAYOUT_ROUTES = [
         component: TopicOverviewComponent,
         data: {
             authorities: ['ROLE_USER', 'ROLE_ADMIN'],
-            pageTitle: 'title'
+            pageTitle: 'learnNApp.topic.home.title'
         },
         canActivate: [UserRouteAccessService]
     },

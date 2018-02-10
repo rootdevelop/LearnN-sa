@@ -7,6 +7,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { ActivityResult } from './activity-result.model';
 import { ActivityResultService } from './activity-result.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import {ChallengeService} from "../challenge/challenge.service";
 
 @Component({
     selector: 'jhi-activity-result',
@@ -37,7 +38,8 @@ currentAccount: any;
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private challengeService: ChallengeService
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
@@ -143,6 +145,19 @@ currentAccount: any;
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
         this.activityResults = data;
+
+        for(let i = 0; i < data.length; i++) {
+            this.challengeService.find(data[i].challengeId).subscribe((response: any) => {
+                for(let i = 0; i < this.activityResults.length; i++) {
+                    try {
+                        this.activityResults[i].challengeId = response.body.question.split(" ")[0]; // get correct challenge
+                    } catch (err) {
+                        console.error(err);
+                    }
+
+                }
+            })
+        }
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
