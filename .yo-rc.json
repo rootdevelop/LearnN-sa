@@ -16,7 +16,7 @@
     "databaseType": "mongodb",
     "devDatabaseType": "mongodb",
     "prodDatabaseType": "mongodb",
-    "searchEngine": false,
+    "searchEngine": "elasticsearch",
     "messageBroker": false,
     "serviceDiscoveryType": false,
     "buildTool": "maven",

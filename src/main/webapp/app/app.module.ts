@@ -1,6 +1,6 @@
 import './vendor.ts';
 
-import { NgModule, Injector } from '@angular/core';
+import {NgModule, Injector, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Ng2Webstorage, LocalStorageService, SessionStorageService  } from 'ngx-webstorage';
@@ -27,6 +27,8 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import {ExecuteComponent} from "./execute/execute.component";
+import { TopicOverviewComponent } from './topic-overview/topic-overview.component';
 
 @NgModule({
     imports: [
@@ -37,7 +39,7 @@ import {
         LearnNHomeModule,
         LearnNAdminModule,
         LearnNAccountModule,
-        LearnNEntityModule,
+        LearnNEntityModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -46,7 +48,9 @@ import {
         ErrorComponent,
         PageRibbonComponent,
         ActiveMenuDirective,
-        FooterComponent
+        FooterComponent,
+        ExecuteComponent,
+        TopicOverviewComponent
     ],
     providers: [
         ProfileService,
@@ -86,6 +90,7 @@ import {
             ]
         }
     ],
-    bootstrap: [ JhiMainComponent ]
+    bootstrap: [ JhiMainComponent ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class LearnNAppModule {}

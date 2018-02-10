@@ -24,6 +24,13 @@ spring:
             host: localhost
             port: 0
             database: LearnN
+        elasticsearch:
+            cluster-name:
+            cluster-nodes:
+            properties:
+                path:
+                    logs: target/elasticsearch/log
+                    data: target/elasticsearch/data
     mail:
         host: localhost
     messages:

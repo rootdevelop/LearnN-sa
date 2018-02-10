@@ -1,0 +1,24 @@
+
+{
+    "learnNApp": {
+        "topic" : {
+            "home": {
+                "title": "Topics",
+                "createLabel": "Maak een nieuwe Topic",
+                "createOrEditLabel": "Maak of wijzig een Topic",
+                "search": "Search for Topic"
+            },
+            "created": "A new Topic is created with identifier {{ param }}",
+            "updated": "A Topic is updated with identifier {{ param }}",
+            "deleted": "A Topic is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Topic {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Topic"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

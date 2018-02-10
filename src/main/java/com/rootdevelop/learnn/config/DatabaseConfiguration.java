@@ -13,8 +13,12 @@ import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.CustomConversions;
@@ -25,7 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@EnableMongoRepositories("com.rootdevelop.learnn.repository")
+@EnableElasticsearchRepositories(basePackages = "com.rootdevelop.learnn.repository.search", excludeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, value = MongoRepository.class))
+@EnableMongoRepositories(basePackages = "com.rootdevelop.learnn.repository", excludeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, value = ElasticsearchRepository.class))
 @Profile("!" + JHipsterConstants.SPRING_PROFILE_CLOUD)
 @Import(value = MongoAutoConfiguration.class)
 @EnableMongoAuditing(auditorAwareRef = "springSecurityAuditorAware")

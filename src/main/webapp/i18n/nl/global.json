@@ -4,9 +4,13 @@
         "browsehappy": "U gebruikt een <strong>verouderde</strong> browser. <a href=\"http://browsehappy.com/?locale=en\">upgrade uw browser</a> om de bruikbaarheid te verbeteren.",
         "menu": {
             "home": "Startpagina",
+            "topics": "Onderwerpen",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entiteiten",
+                "challenge": "Challenge",
+                "topic": "Topic",
+                "activityResult": "Activity Result",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

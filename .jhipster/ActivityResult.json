@@ -1,0 +1,31 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "user",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "challengeId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "result",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "timeSpent",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "timestamp",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "activity_result",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

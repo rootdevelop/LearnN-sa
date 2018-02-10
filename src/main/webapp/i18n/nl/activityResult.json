@@ -1,0 +1,27 @@
+
+{
+    "learnNApp": {
+        "activityResult" : {
+            "home": {
+                "title": "Activity Results",
+                "createLabel": "Maak een nieuwe Activity Result",
+                "createOrEditLabel": "Maak of wijzig een Activity Result",
+                "search": "Search for Activity Result"
+            },
+            "created": "A new Activity Result is created with identifier {{ param }}",
+            "updated": "A Activity Result is updated with identifier {{ param }}",
+            "deleted": "A Activity Result is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Activity Result {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Activity Result"
+            },
+            "user": "User",
+            "challengeId": "Challenge Id",
+            "result": "Result",
+            "timeSpent": "Time Spent",
+            "timestamp": "Timestamp"
+        }
+    }
+}

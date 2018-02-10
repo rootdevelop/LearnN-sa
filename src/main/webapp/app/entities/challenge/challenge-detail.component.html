@@ -1,0 +1,46 @@
+
+<div *ngIf="challenge">
+    <h2><span jhiTranslate="learnNApp.challenge.detail.title">Challenge</span> {{challenge.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="learnNApp.challenge.question">Question</span></dt>
+        <dd>
+            <span>{{challenge.question}}</span>
+        </dd>
+        <dt><span jhiTranslate="learnNApp.challenge.answer">Answer</span></dt>
+        <dd>
+            <span>{{challenge.answer}}</span>
+        </dd>
+        <dt><span jhiTranslate="learnNApp.challenge.language">Language</span></dt>
+        <dd>
+            <span>{{challenge.language}}</span>
+        </dd>
+        <dt><span jhiTranslate="learnNApp.challenge.active">Active</span></dt>
+        <dd>
+            <span>{{challenge.active}}</span>
+        </dd>
+        <dt><span jhiTranslate="learnNApp.challenge.snippet">Snippet</span></dt>
+        <dd>
+            <span>{{challenge.snippet}}</span>
+        </dd>
+        <dt><span jhiTranslate="learnNApp.challenge.topic">Topic</span></dt>
+        <dd>
+            <span>{{challenge.topic}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'challenge/'+ challenge.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,34 @@
+<h3>{{topic}}</h3>
+<p>
+    <div [innerHTML]="question"></div>
+</p>
+<div class="row">
+    <div class="col-md-6">
+        <pre style="background-color: #333333;" id="code">
+            <code id="snippet" class="{{language}}" [innerHTML]="code"></code>
+        </pre>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-10">
+                <label style="color: #333333;" for="answer">answer:</label>
+                <input type="text" class="form-control" id="answer" (click)="clearErrorMsg()" [(ngModel)]="givenAnswer">
+                <br>
+                <p style="color: red">{{errorMsg}}</p>
+                <p *ngIf="success || lastQuestion" style="color: green">Good job! You solved this in {{savedTime}} seconds</p>
+                <div style="text-align: center; ">
+                    <button [disabled]="success || lastQuestion" (click)="submitAnswer()" class="btn btn-warning btn-lg">Submit Answer</button><br><br>
+                    <button *ngIf="success" (click)="nextChallenge(topicId)" class="btn btn-success btn-lg">Next question</button>
+                    <button *ngIf="lastQuestion" routerLink="/topics" class="btn btn-success btn-lg">Go back to topic list</button>
+                </div>
+            </div>
+            <div class="col-md-1">
+
+            </div>
+        </div>
+
+    </div>
+</div>

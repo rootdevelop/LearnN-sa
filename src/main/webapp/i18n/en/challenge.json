@@ -1,0 +1,28 @@
+
+{
+    "learnNApp": {
+        "challenge" : {
+            "home": {
+                "title": "Challenges",
+                "createLabel": "Create a new Challenge",
+                "createOrEditLabel": "Create or edit a Challenge",
+                "search": "Search for Challenge"
+            },
+            "created": "A new Challenge is created with identifier {{ param }}",
+            "updated": "A Challenge is updated with identifier {{ param }}",
+            "deleted": "A Challenge is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Challenge {{ id }}?"
+            },
+            "detail": {
+                "title": "Challenge"
+            },
+            "question": "Question",
+            "answer": "Answer",
+            "language": "Language",
+            "active": "Active",
+            "snippet": "Snippet",
+            "topic": "Topic"
+        }
+    }
+}

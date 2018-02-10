@@ -1,0 +1,10 @@
+package com.rootdevelop.learnn.repository.search;
+
+import com.rootdevelop.learnn.domain.User;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+
+/**
+ * Spring Data Elasticsearch repository for the User entity.
+ */
+public interface UserSearchRepository extends ElasticsearchRepository<User, String> {
+}
