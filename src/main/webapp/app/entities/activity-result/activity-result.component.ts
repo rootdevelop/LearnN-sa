@@ -146,18 +146,18 @@ currentAccount: any;
         // this.page = pagingParams.page;
         this.activityResults = data;
 
-        for(let i = 0; i < data.length; i++) {
-            this.challengeService.find(data[i].challengeId).subscribe((response: any) => {
-                for(let i = 0; i < this.activityResults.length; i++) {
-                    try {
-                        this.activityResults[i].challengeId = response.body.question.split(" ")[0]; // get correct challenge
-                    } catch (err) {
-                        console.error(err);
-                    }
-
-                }
-            })
-        }
+        // for(let i = 0; i < data.length; i++) {
+        //     this.challengeService.find(data[i].challengeId).subscribe((response: any) => {
+        //         for(let i = 0; i < this.activityResults.length; i++) {
+        //             try {
+        //                 this.activityResults[i].challengeId = response.body.question.split(" ")[0]; // get correct challenge
+        //             } catch (err) {
+        //                 console.error(err);
+        //             }
+        //
+        //         }
+        //     })
+        // }
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
