@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ChallengeService} from '../entities/challenge/challenge.service';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Challenge} from '../entities/challenge/challenge.model';
 import {ActivityResultService} from '../entities/activity-result/activity-result.service';
 import {ActivityResult} from "../entities/activity-result/activity-result.model";
@@ -9,6 +9,7 @@ import {Subscription} from "rxjs/Subscription";
 import {TopicService} from "../entities/topic/topic.service";
 import {Topic} from "../entities/topic/topic.model";
 import {ActivatedRoute} from "@angular/router";
+import {SERVER_API_URL} from "../app.constants";
 
 declare const hljs: any;
 
@@ -22,7 +23,8 @@ export class ExecuteComponent implements OnInit {
     constructor(private challengeService: ChallengeService,
                 private activityResultService: ActivityResultService,
                 private topicService: TopicService,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private http: HttpClient) {
     }
 
     topic: string;
@@ -96,6 +98,21 @@ export class ExecuteComponent implements OnInit {
             hljs.highlightBlock(document.getElementById("snippet"));
             hljs.initLineNumbersOnLoad();
         }, 100);
+
+        let uri = SERVER_API_URL + 'api/challenge-status/' + challenge.id;
+        console.log(uri);
+
+        this.http.get(uri).subscribe(data => { this.updateResult(data); });
+    }
+
+    updateResult(data) {
+        console.log(data);
+        if (data.challengeId == this.id && data.result) {
+
+            this.givenAnswer = this.answer;
+            this.savedTime = data.timeSpent;
+            this.success = true;
+        }
     }
 
     getChallenges(id: string) {

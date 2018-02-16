@@ -140,12 +140,9 @@ export class TopicOverviewComponent implements OnInit, OnDestroy {
 
         for (let i = 0; i < this.topics.length; i++) {
             let uri = SERVER_API_URL + 'api/progress/' + this.topics[i].id;
-            console.log(uri);
 
             this.http.get(uri).subscribe(data => {
                 this.updateTopicWithProgress(data);
-
-
             });
         }
     }

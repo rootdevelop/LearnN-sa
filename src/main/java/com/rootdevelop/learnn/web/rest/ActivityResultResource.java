@@ -213,12 +213,17 @@ public class ActivityResultResource {
         ActivityResult result = activityResultRepository.findByUserAndChallengeIdAndResult(SecurityUtils.getCurrentUserLogin().get(), challenge, "SUCCESS");
 
         ChallengeStatus challengeStatus = new ChallengeStatus();
+        challengeStatus.setChallengeId(challenge);
 
         if (result == null) {
+            challengeStatus.setResult(false);
+        } else {
+            challengeStatus.setResult(true);
+            challengeStatus.setTimeSpent(result.getTimeSpent());
 
         }
 
-        return new ChallengeStatus();
+        return challengeStatus;
     }
 
 }
