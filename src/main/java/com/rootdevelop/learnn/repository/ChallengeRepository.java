@@ -11,5 +11,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 @SuppressWarnings("unused")
 @Repository
 public interface ChallengeRepository extends MongoRepository<Challenge, String> {
-
+    Iterable<Challenge> findAllByTopicEquals(String topic);
 }

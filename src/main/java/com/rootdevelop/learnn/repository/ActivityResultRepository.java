@@ -11,5 +11,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 @SuppressWarnings("unused")
 @Repository
 public interface ActivityResultRepository extends MongoRepository<ActivityResult, String> {
-
+    ActivityResult findByUserAndChallengeIdAndResult(String user, String challengeId, String result);
 }

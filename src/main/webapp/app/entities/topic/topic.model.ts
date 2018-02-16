@@ -5,6 +5,7 @@ export class Topic implements BaseEntity {
         public id?: string,
         public name?: string,
         public description?: string,
+        public progress?: string
     ) {
     }
 }

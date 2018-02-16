@@ -3,8 +3,12 @@ package com.rootdevelop.learnn.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.rootdevelop.learnn.domain.ActivityResult;
 
+import com.rootdevelop.learnn.domain.Challenge;
+import com.rootdevelop.learnn.domain.TopicProgress;
 import com.rootdevelop.learnn.repository.ActivityResultRepository;
+import com.rootdevelop.learnn.repository.ChallengeRepository;
 import com.rootdevelop.learnn.repository.search.ActivityResultSearchRepository;
+import com.rootdevelop.learnn.security.AuthoritiesConstants;
 import com.rootdevelop.learnn.security.SecurityUtils;
 import com.rootdevelop.learnn.web.rest.errors.BadRequestAlertException;
 import com.rootdevelop.learnn.web.rest.util.HeaderUtil;
@@ -45,9 +49,14 @@ public class ActivityResultResource {
 
     private final ActivityResultSearchRepository activityResultSearchRepository;
 
-    public ActivityResultResource(ActivityResultRepository activityResultRepository, ActivityResultSearchRepository activityResultSearchRepository) {
+    private final ChallengeRepository challengeRepository;
+
+    public ActivityResultResource(ActivityResultRepository activityResultRepository,
+                                  ActivityResultSearchRepository activityResultSearchRepository,
+                                  ChallengeRepository challengeRepository) {
         this.activityResultRepository = activityResultRepository;
         this.activityResultSearchRepository = activityResultSearchRepository;
+        this.challengeRepository = challengeRepository;
     }
 
     /**
@@ -87,6 +96,9 @@ public class ActivityResultResource {
     @PutMapping("/activity-results")
     @Timed
     public ResponseEntity<ActivityResult> updateActivityResult(@RequestBody ActivityResult activityResult) throws URISyntaxException {
+
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
+
         log.debug("REST request to update ActivityResult : {}", activityResult);
         if (activityResult.getId() == null) {
             return createActivityResult(activityResult);
@@ -107,6 +119,8 @@ public class ActivityResultResource {
     @GetMapping("/activity-results")
     @Timed
     public ResponseEntity<List<ActivityResult>> getAllActivityResults(Pageable pageable) {
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
+
         log.debug("REST request to get a page of ActivityResults");
         Page<ActivityResult> page = activityResultRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/activity-results");
@@ -122,6 +136,9 @@ public class ActivityResultResource {
     @GetMapping("/activity-results/{id}")
     @Timed
     public ResponseEntity<ActivityResult> getActivityResult(@PathVariable String id) {
+
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
+
         log.debug("REST request to get ActivityResult : {}", id);
         ActivityResult activityResult = activityResultRepository.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(activityResult));
@@ -136,6 +153,10 @@ public class ActivityResultResource {
     @DeleteMapping("/activity-results/{id}")
     @Timed
     public ResponseEntity<Void> deleteActivityResult(@PathVariable String id) {
+
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
+
+
         log.debug("REST request to delete ActivityResult : {}", id);
         activityResultRepository.delete(id);
         activityResultSearchRepository.delete(id);
@@ -153,10 +174,36 @@ public class ActivityResultResource {
     @GetMapping("/_search/activity-results")
     @Timed
     public ResponseEntity<List<ActivityResult>> searchActivityResults(@RequestParam String query, Pageable pageable) {
+
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
+
         log.debug("REST request to search for a page of ActivityResults for query {}", query);
         Page<ActivityResult> page = activityResultSearchRepository.search(queryStringQuery(query), pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/activity-results");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/progress/{topic}")
+    @Timed
+    public TopicProgress getProgressForTopic(@PathVariable String topic) {
+
+        Iterable<Challenge> challenges = challengeRepository.findAllByTopicEquals(topic);
+
+        int success = 0;
+        int total = 0;
+
+        for (Challenge challenge : challenges) {
+            ActivityResult result = activityResultRepository.findByUserAndChallengeIdAndResult(SecurityUtils.getCurrentUserLogin().get(), challenge.getId(), "SUCCESS");
+
+            if (result != null) {
+                success++;
+            }
+
+            total++;
+        }
+
+
+        return  new TopicProgress(topic, total, success);
     }
 
 }

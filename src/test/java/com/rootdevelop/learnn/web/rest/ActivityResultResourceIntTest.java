@@ -79,7 +79,7 @@ public class ActivityResultResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ActivityResultResource activityResultResource = new ActivityResultResource(activityResultRepository, activityResultSearchRepository);
+        final ActivityResultResource activityResultResource = new ActivityResultResource(activityResultRepository, activityResultSearchRepository, null);
         this.restActivityResultMockMvc = MockMvcBuilders.standaloneSetup(activityResultResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

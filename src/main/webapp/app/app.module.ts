@@ -29,6 +29,7 @@ import {
 } from './layouts';
 import {ExecuteComponent} from "./execute/execute.component";
 import { TopicOverviewComponent } from './topic-overview/topic-overview.component';
+import {TopicProgressService} from "./topic-overview/topic-progress.service";
 
 @NgModule({
     imports: [
@@ -55,6 +56,7 @@ import { TopicOverviewComponent } from './topic-overview/topic-overview.componen
     providers: [
         ProfileService,
         PaginationConfig,
+        TopicProgressService,
         UserRouteAccessService,
         {
             provide: HTTP_INTERCEPTORS,

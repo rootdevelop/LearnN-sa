@@ -5,6 +5,8 @@ import com.rootdevelop.learnn.domain.Challenge;
 
 import com.rootdevelop.learnn.repository.ChallengeRepository;
 import com.rootdevelop.learnn.repository.search.ChallengeSearchRepository;
+import com.rootdevelop.learnn.security.AuthoritiesConstants;
+import com.rootdevelop.learnn.security.SecurityUtils;
 import com.rootdevelop.learnn.web.rest.errors.BadRequestAlertException;
 import com.rootdevelop.learnn.web.rest.util.HeaderUtil;
 import com.rootdevelop.learnn.web.rest.util.PaginationUtil;
@@ -59,6 +61,9 @@ public class ChallengeResource {
     @PostMapping("/challenges")
     @Timed
     public ResponseEntity<Challenge> createChallenge(@Valid @RequestBody Challenge challenge) throws URISyntaxException {
+
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
+
         log.debug("REST request to save Challenge : {}", challenge);
         if (challenge.getId() != null) {
             throw new BadRequestAlertException("A new challenge cannot already have an ID", ENTITY_NAME, "idexists");
@@ -82,6 +87,10 @@ public class ChallengeResource {
     @PutMapping("/challenges")
     @Timed
     public ResponseEntity<Challenge> updateChallenge(@Valid @RequestBody Challenge challenge) throws URISyntaxException {
+
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
+
+
         log.debug("REST request to update Challenge : {}", challenge);
         if (challenge.getId() == null) {
             return createChallenge(challenge);
@@ -131,6 +140,9 @@ public class ChallengeResource {
     @DeleteMapping("/challenges/{id}")
     @Timed
     public ResponseEntity<Void> deleteChallenge(@PathVariable String id) {
+
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
+
         log.debug("REST request to delete Challenge : {}", id);
         challengeRepository.delete(id);
         challengeSearchRepository.delete(id);
