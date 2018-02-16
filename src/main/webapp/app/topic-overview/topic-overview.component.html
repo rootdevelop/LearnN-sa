@@ -9,12 +9,14 @@
             <tr>
                 <th><span jhiTranslate="learnNApp.topic.name">Name</span></th>
                 <th><span jhiTranslate="learnNApp.topic.description">Description</span></th>
+                <th><span jhiTranslate="learnNApp.topic.progress">Progress</span></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let topic of topics ;trackBy: trackId">
                 <td><a routerLink="/execute/{{topic.id}}">{{topic.name}}</a></td>
                 <td>{{topic.description}}</td>
+                <td>{{topic.progress}}</td>
             </tr>
             </tbody>
         </table>

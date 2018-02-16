@@ -7,6 +7,7 @@ import {JhiAlertService, JhiEventManager, JhiParseLinks} from "ng-jhipster";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Principal} from "../shared/auth/principal.service";
 import {Subscription} from "rxjs/Subscription";
+import {ChallengeService} from "../entities/challenge/challenge.service";
 
 @Component({
   selector: 'jhi-topic-overview',
@@ -38,7 +39,8 @@ export class TopicOverviewComponent implements OnInit, OnDestroy  {
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private challengeService: ChallengeService
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
 

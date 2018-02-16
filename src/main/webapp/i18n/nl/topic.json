@@ -18,7 +18,8 @@
                 "title": "Onderwerp"
             },
             "name": "Naam",
-            "description": "Omschrijving"
+            "description": "Omschrijving",
+            "progress": "Voortgang"
         }
     }
 }
