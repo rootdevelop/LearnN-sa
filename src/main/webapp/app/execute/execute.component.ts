@@ -39,8 +39,8 @@ export class ExecuteComponent implements OnInit {
     private answer: string;
     private id: string;
 
-    private questionNr: number = 0;
-    private totalQuestions: number = 1;
+    questionNr: number = 1;
+    totalQuestions: number = 1;
 
     private subscription: Subscription;
     private seconds;
@@ -50,16 +50,22 @@ export class ExecuteComponent implements OnInit {
 
     savedTime: number;
 
+    private challenges;
+
     ngOnInit() {
         this.subscription = this.route.params.subscribe((params) => {
-            this.nextChallenge(params['id']);
+            this.getChallenges(params['id']);
         });
 
     }
 
-    nextChallenge(id: string) {
-        console.log("topic:", id);
-        this.topicId = id;
+    nextChallenge() {
+        console.log(this.totalQuestions + "-" + this.questionNr);
+
+        if (this.subscription) this.subscription.unsubscribe();
+        if (this.subscription) this.subscription = null;
+        if (this.timer) this.timer = null;
+
         this.timer = TimerObservable.create(1000, 1000);
         this.subscription = this.timer.subscribe(t => {
             this.seconds = t;
@@ -68,12 +74,41 @@ export class ExecuteComponent implements OnInit {
         this.success = false;
         this.givenAnswer = "";
         this.clearErrorMsg();
-        if (this.totalQuestions == this.questionNr) return;
+        if (this.totalQuestions < this.questionNr) return;
 
+        const challenge = this.challenges[this.questionNr - 1];
+
+        if (!challenge.active) {
+            this.questionNr++;
+            this.nextChallenge();
+            return;
+        }
+
+        this.id = challenge.id;
+        this.code = challenge.snippet;
+        this.question = challenge.question;
+        this.language = challenge.language;
+        this.answer = challenge.answer;
+        this.topicId = challenge.topic;
+
+
+        setTimeout(function () {
+            hljs.highlightBlock(document.getElementById("snippet"));
+            hljs.initLineNumbersOnLoad();
+        }, 100);
+    }
+
+    getChallenges(id: string) {
+
+        this.topicService.find(id).subscribe((topicResponse: HttpResponse<Topic>) => {
+            this.topic = topicResponse.body.name;
+        });
+
+        this.topicId = id;
         this.challengeService.search({
             query: this.topicId,
-            page: this.questionNr,
-            size: 1
+            page: 0,
+            size: 100
         }).subscribe(
             (res: HttpResponse<Challenge[]>) => this.loadChallenge(res.body, res.headers),
             (res: HttpErrorResponse) => this.error(res.message)
@@ -85,49 +120,33 @@ export class ExecuteComponent implements OnInit {
 
         if (body.length === 0) {
             console.log('no questions');
-            return;
+            return; // todo return to topic list
         }
 
-        this.totalQuestions = headers.get('X-Total-Count');
+        this.totalQuestions = body.length;
+        this.challenges = body;
 
-        const challenge = body[0];
-
-        if (!challenge.active) {
-            this.questionNr++;
-            this.nextChallenge(this.topicId);
-            return;
-        }
-
-        this.id = challenge.id;
-        this.code = challenge.snippet;
-        this.question = challenge.question;
-        this.language = challenge.language;
-        this.answer = challenge.answer;
-        this.topicId = challenge.topic;
-
-        this.topicService.find(challenge.topic).subscribe((topicResponse: HttpResponse<Topic>) => {
-            this.topic = topicResponse.body.name;
-        });
-
-        this.questionNr++;
-
-        setTimeout(function () {
-            hljs.highlightBlock(document.getElementById("snippet"));
-            hljs.initLineNumbersOnLoad();
-        }, 100);
+        this.nextChallenge();
     }
 
     clearErrorMsg() {
         this.errorMsg = "";
     }
 
-    goHome() {
-        // todo build implementation
+    next() {
+        this.questionNr++;
+        this.nextChallenge();
+    }
+
+    previous() {
+        this.questionNr--;
+        this.nextChallenge();
+
     }
 
     submitAnswer() {
 
-        console.log(this.totalQuestions + " " + this.questionNr);
+        if (this.givenAnswer == "") return;
 
         if (this.subscription) this.subscription.unsubscribe();
         if (this.subscription) this.subscription = null;
