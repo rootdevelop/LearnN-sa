@@ -27,6 +27,7 @@
             <th jhiSortBy="user"><span jhiTranslate="learnNApp.activityResult.user">User</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="challengeId"><span jhiTranslate="learnNApp.activityResult.challengeId">Challenge</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="result"><span jhiTranslate="learnNApp.activityResult.result">Result</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="answer"><span jhiTranslate="learnNApp.activityResult.answer">Answer</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="timeSpent"><span jhiTranslate="learnNApp.activityResult.timeSpent">Time Spent</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="timestamp"><span jhiTranslate="learnNApp.activityResult.timestamp">Timestamp</span> <span class="fa fa-sort"></span></th>
             <th></th>
@@ -38,6 +39,7 @@
                 <td>{{activityResult.user}}</td>
                 <td><a routerLink="/challenge/{{activityResult.challengeId}}">{{activityResult.challengeId}}</a></td>
                 <td>{{activityResult.result}}</td>
+                <td>{{activityResult.answer}}</td>
                 <td>{{activityResult.timeSpent}}</td>
                 <td>{{activityResult.timestamp | date:'medium'}}</td>
                 <td class="text-right">

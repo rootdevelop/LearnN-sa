@@ -135,8 +135,10 @@ export class ExecuteComponent implements OnInit {
         this.savedTime = this.seconds;
 
         if (this.answer == this.givenAnswer) {
+
             this.activityResultService.create({
                 challengeId: this.id,
+                answer: this.givenAnswer,
                 timeSpent: this.savedTime,
                 result: "SUCCESS"
             }).subscribe((res: HttpResponse<ActivityResult>) =>
@@ -151,6 +153,7 @@ export class ExecuteComponent implements OnInit {
         } else {
             this.activityResultService.create({
                 challengeId: this.id,
+                answer: this.givenAnswer,
                 timeSpent: this.savedTime,
                 result: "FAIL"
             }).subscribe((res: HttpResponse<ActivityResult>) =>

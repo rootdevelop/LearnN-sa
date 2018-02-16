@@ -156,13 +156,11 @@ export class TopicOverviewComponent implements OnInit, OnDestroy {
             if (this.topics[i].id === progress.topic) {
                 this.topics[i].progress = `${progress.success}/${progress.total}`;
 
+            }
         }
     }
-}
 
-private
-onError(error)
-{
-    this.jhiAlertService.error(error.message, null, null);
-}
+    onError(error) {
+        this.jhiAlertService.error(error.message, null, null);
+    }
 }

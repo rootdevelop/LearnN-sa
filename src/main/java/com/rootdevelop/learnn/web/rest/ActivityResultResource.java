@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.rootdevelop.learnn.domain.ActivityResult;
 
 import com.rootdevelop.learnn.domain.Challenge;
+import com.rootdevelop.learnn.domain.ChallengeStatus;
 import com.rootdevelop.learnn.domain.TopicProgress;
 import com.rootdevelop.learnn.repository.ActivityResultRepository;
 import com.rootdevelop.learnn.repository.ChallengeRepository;
@@ -204,6 +205,20 @@ public class ActivityResultResource {
 
 
         return  new TopicProgress(topic, total, success);
+    }
+
+    @GetMapping("/challenge-status/{challenge}")
+    public ChallengeStatus getChallengeStatus(@PathVariable String challenge) {
+
+        ActivityResult result = activityResultRepository.findByUserAndChallengeIdAndResult(SecurityUtils.getCurrentUserLogin().get(), challenge, "SUCCESS");
+
+        ChallengeStatus challengeStatus = new ChallengeStatus();
+
+        if (result == null) {
+
+        }
+
+        return new ChallengeStatus();
     }
 
 }

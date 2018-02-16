@@ -20,6 +20,7 @@
             "user": "Gebruiker",
             "challengeId": "Uitdaging",
             "result": "Resultaat",
+            "answer": "Antwoord",
             "timeSpent": "Gespendeerde tijd (in seconden)",
             "timestamp": "Timestamp"
         }

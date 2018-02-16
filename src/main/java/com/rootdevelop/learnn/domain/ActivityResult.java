@@ -29,6 +29,9 @@ public class ActivityResult implements Serializable {
     @Field("result")
     private String result;
 
+    @Field("answer")
+    private String answer;
+
     @Field("time_spent")
     private Integer timeSpent;
 
@@ -81,6 +84,14 @@ public class ActivityResult implements Serializable {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public Integer getTimeSpent() {

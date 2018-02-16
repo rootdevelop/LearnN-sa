@@ -6,6 +6,7 @@ export class ActivityResult implements BaseEntity {
         public user?: string,
         public challengeId?: string,
         public result?: string,
+        public answer?: string,
         public timeSpent?: number,
         public timestamp?: any,
     ) {

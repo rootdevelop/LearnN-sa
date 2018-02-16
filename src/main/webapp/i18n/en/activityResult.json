@@ -20,6 +20,7 @@
             "user": "User",
             "challengeId": "Challenge",
             "result": "Result",
+            "answer": "Answer",
             "timeSpent": "Time Spent (in seconds)",
             "timestamp": "Timestamp"
         }
