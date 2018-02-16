@@ -33,7 +33,7 @@
             <div class="col-md-10">
                 <form>
                     <label style="color: #333333;" for="answer">Enter your answer below:</label>
-                    <input name="answer" type="text" class="form-control" id="answer" (click)="clearErrorMsg()"
+                    <input [disabled]="success" name="answer" type="text" class="form-control" id="answer" (click)="clearErrorMsg()"
                            [(ngModel)]="givenAnswer" required="required">
                     <br>
                     <p style="color: red">{{errorMsg}}</p>
