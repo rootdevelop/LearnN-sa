@@ -149,6 +149,7 @@ public class UserResource {
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
     @GetMapping("/users")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
         final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
@@ -204,6 +205,7 @@ public class UserResource {
      * @return the result of the search
      */
     @GetMapping("/_search/users/{query}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public List<User> search(@PathVariable String query) {
         return StreamSupport

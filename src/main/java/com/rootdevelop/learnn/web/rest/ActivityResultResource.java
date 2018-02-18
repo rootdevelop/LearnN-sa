@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -68,6 +69,7 @@ public class ActivityResultResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/activity-results")
+    @Secured(AuthoritiesConstants.USER)
     @Timed
     public ResponseEntity<ActivityResult> createActivityResult(@RequestBody ActivityResult activityResult) throws URISyntaxException {
         log.debug("REST request to save ActivityResult : {}", activityResult);
@@ -95,6 +97,7 @@ public class ActivityResultResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/activity-results")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<ActivityResult> updateActivityResult(@RequestBody ActivityResult activityResult) throws URISyntaxException {
 
@@ -118,6 +121,7 @@ public class ActivityResultResource {
      * @return the ResponseEntity with status 200 (OK) and the list of activityResults in body
      */
     @GetMapping("/activity-results")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<List<ActivityResult>> getAllActivityResults(Pageable pageable) {
         if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
@@ -135,6 +139,7 @@ public class ActivityResultResource {
      * @return the ResponseEntity with status 200 (OK) and with body the activityResult, or with status 404 (Not Found)
      */
     @GetMapping("/activity-results/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<ActivityResult> getActivityResult(@PathVariable String id) {
 
@@ -152,6 +157,7 @@ public class ActivityResultResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/activity-results/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Void> deleteActivityResult(@PathVariable String id) {
 
@@ -173,6 +179,7 @@ public class ActivityResultResource {
      * @return the result of the search
      */
     @GetMapping("/_search/activity-results")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<List<ActivityResult>> searchActivityResults(@RequestParam String query, Pageable pageable) {
 
@@ -185,6 +192,7 @@ public class ActivityResultResource {
     }
 
     @GetMapping("/progress/{topic}")
+    @Secured(AuthoritiesConstants.USER)
     @Timed
     public TopicProgress getProgressForTopic(@PathVariable String topic) {
 
@@ -208,6 +216,7 @@ public class ActivityResultResource {
     }
 
     @GetMapping("/challenge-status/{challenge}")
+    @Secured(AuthoritiesConstants.USER)
     public ChallengeStatus getChallengeStatus(@PathVariable String challenge) {
 
         ActivityResult result = activityResultRepository.findByUserAndChallengeIdAndResult(SecurityUtils.getCurrentUserLogin().get(), challenge, "SUCCESS");

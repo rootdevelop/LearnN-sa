@@ -1,5 +1,6 @@
 package com.rootdevelop.learnn.web.rest;
 
+import com.rootdevelop.learnn.security.AuthoritiesConstants;
 import com.rootdevelop.learnn.service.AuditEventService;
 import com.rootdevelop.learnn.web.rest.util.PaginationUtil;
 
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -36,6 +38,7 @@ public class AuditResource {
      * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
      */
     @GetMapping
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<List<AuditEvent>> getAll(Pageable pageable) {
         Page<AuditEvent> page = auditEventService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/management/audits");
@@ -51,6 +54,7 @@ public class AuditResource {
      * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
      */
     @GetMapping(params = {"fromDate", "toDate"})
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<List<AuditEvent>> getByDates(
         @RequestParam(value = "fromDate") LocalDate fromDate,
         @RequestParam(value = "toDate") LocalDate toDate,
@@ -71,6 +75,7 @@ public class AuditResource {
      * @return the ResponseEntity with status 200 (OK) and the AuditEvent in body, or status 404 (Not Found)
      */
     @GetMapping("/{id:.+}")
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<AuditEvent> get(@PathVariable String id) {
         return ResponseUtil.wrapOrNotFound(auditEventService.find(id));
     }
