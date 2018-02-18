@@ -68,8 +68,6 @@ export class ExecuteComponent implements OnInit {
         this.multipleChoice = false;
         this.choices = [];
 
-        console.log(this.totalQuestions + "-" + this.questionNr);
-
         if (this.subscription) this.subscription.unsubscribe();
         if (this.subscription) this.subscription = null;
         if (this.timer) this.timer = null;
@@ -98,19 +96,16 @@ export class ExecuteComponent implements OnInit {
         this.language = challenge.language;
 
         let multipleAnswers = challenge.answer.split(",");
-        console.log(multipleAnswers);
 
         if (multipleAnswers.length > 1) {
             this.multipleChoice = true;
             for(let i = 0; i < multipleAnswers.length; i++) {
 
                 let qa = multipleAnswers[i].split("=");
-                console.log(qa);
                 this.choices.push(qa[0].trim());
 
                 if (qa.length > 1) {
                     this.answer = qa[0];
-                    console.log(this.answer);
                 }
             }
         } else {
@@ -126,13 +121,11 @@ export class ExecuteComponent implements OnInit {
         }, 100);
 
         let uri = SERVER_API_URL + 'api/challenge-status/' + challenge.id;
-        console.log(uri);
 
         this.http.get(uri).subscribe(data => { this.updateResult(data); });
     }
 
     updateResult(data) {
-        console.log(data);
         if (data.challengeId == this.id && data.result) {
 
             this.givenAnswer = this.answer;
@@ -200,10 +193,6 @@ export class ExecuteComponent implements OnInit {
         if (this.timer) this.timer = null;
         this.savedTime = this.seconds;
 
-        console.log(this.answer == this.givenAnswer);
-        console.log(this.answer);
-        console.log(this.givenAnswer);
-
         if (this.answer == this.givenAnswer) {
 
             this.activityResultService.create({
@@ -212,7 +201,7 @@ export class ExecuteComponent implements OnInit {
                 timeSpent: this.savedTime,
                 result: "SUCCESS"
             }).subscribe((res: HttpResponse<ActivityResult>) =>
-                console.log(res.body), (res: HttpErrorResponse) => console.log(res));
+                console.log("ok"), (res: HttpErrorResponse) => console.error(res));
 
             if (this.questionNr == this.totalQuestions) {
                 console.log("Finished");
@@ -227,7 +216,7 @@ export class ExecuteComponent implements OnInit {
                 timeSpent: this.savedTime,
                 result: "FAIL"
             }).subscribe((res: HttpResponse<ActivityResult>) =>
-                console.log(res.body), (res: HttpErrorResponse) => console.log(res));
+                console.log("ok"), (res: HttpErrorResponse) => console.error(res));
             this.errorMsg = "Whoops, that is not the correct answer";
             this.success = false;
             this.timer = TimerObservable.create(500, 1000);
