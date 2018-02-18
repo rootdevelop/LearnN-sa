@@ -33,6 +33,9 @@ export class ExecuteComponent implements OnInit {
     language: string;
     givenAnswer: string;
 
+    multipleChoice: boolean = false;
+    choices: string[] = [];
+
     success: boolean = false;
     lastQuestion: boolean = false;
 
@@ -62,6 +65,9 @@ export class ExecuteComponent implements OnInit {
     }
 
     nextChallenge() {
+        this.multipleChoice = false;
+        this.choices = [];
+
         console.log(this.totalQuestions + "-" + this.questionNr);
 
         if (this.subscription) this.subscription.unsubscribe();
@@ -90,7 +96,27 @@ export class ExecuteComponent implements OnInit {
         this.code = challenge.snippet;
         this.question = challenge.question;
         this.language = challenge.language;
-        this.answer = challenge.answer;
+
+        let multipleAnswers = challenge.answer.split(",");
+        console.log(multipleAnswers);
+
+        if (multipleAnswers.length > 1) {
+            this.multipleChoice = true;
+            for(let i = 0; i < multipleAnswers.length; i++) {
+
+                let qa = multipleAnswers[i].split("=");
+                console.log(qa);
+                this.choices.push(qa[0].trim());
+
+                if (qa.length > 1) {
+                    this.answer = qa[0];
+                    console.log(this.answer);
+                }
+            }
+        } else {
+            this.answer = challenge.answer;
+        }
+
         this.topicId = challenge.topic;
 
 
@@ -127,13 +153,13 @@ export class ExecuteComponent implements OnInit {
             page: 0,
             size: 100
         }).subscribe(
-            (res: HttpResponse<Challenge[]>) => this.loadChallenge(res.body, res.headers),
+            (res: HttpResponse<Challenge[]>) => this.loadChallenges(res.body, res.headers),
             (res: HttpErrorResponse) => this.error(res.message)
         );
     }
 
 
-    loadChallenge(body: any, headers: any) {
+    loadChallenges(body: any, headers: any) {
 
         if (body.length === 0) {
             console.log('no questions');
@@ -161,6 +187,10 @@ export class ExecuteComponent implements OnInit {
 
     }
 
+    updateAnswer(event) {
+        this.givenAnswer = event;
+    }
+
     submitAnswer() {
 
         if (this.givenAnswer == "") return;
@@ -169,6 +199,10 @@ export class ExecuteComponent implements OnInit {
         if (this.subscription) this.subscription = null;
         if (this.timer) this.timer = null;
         this.savedTime = this.seconds;
+
+        console.log(this.answer == this.givenAnswer);
+        console.log(this.answer);
+        console.log(this.givenAnswer);
 
         if (this.answer == this.givenAnswer) {
 
