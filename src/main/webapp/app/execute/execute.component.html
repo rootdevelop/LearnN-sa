@@ -34,8 +34,11 @@
             <div class="col-md-10">
                 <form>
                     <label style="color: #333333;" for="answer">Enter your answer below:</label>
-                    <input [disabled]="success" name="answer" type="text" class="form-control" id="answer" (click)="clearErrorMsg()"
+                    <input *ngIf="!multipleChoice" [disabled]="success" name="answer" type="text" class="form-control" id="answer" (click)="clearErrorMsg()"
                            [(ngModel)]="givenAnswer" required="required">
+                    <select *ngIf="multipleChoice" [disabled]="success" name="answer" class="form-control" (click)="clearErrorMsg()" [(ngModel)]="givenAnswer" (ngModelChange)="updateAnswer($event)">
+                        <option *ngFor="let choice of choices" value="{{choice}}">{{choice}}</option>
+                    </select>
                     <br>
                     <p style="color: red">{{errorMsg}}</p>
                     <p *ngIf="success || lastQuestion" style="color: green">Good job! You solved this in {{savedTime}}

@@ -5,6 +5,7 @@ import com.rootdevelop.learnn.domain.Topic;
 
 import com.rootdevelop.learnn.repository.TopicRepository;
 import com.rootdevelop.learnn.repository.search.TopicSearchRepository;
+import com.rootdevelop.learnn.security.AuthoritiesConstants;
 import com.rootdevelop.learnn.web.rest.errors.BadRequestAlertException;
 import com.rootdevelop.learnn.web.rest.util.HeaderUtil;
 import com.rootdevelop.learnn.web.rest.util.PaginationUtil;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -56,6 +58,7 @@ public class TopicResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/topics")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Topic> createTopic(@RequestBody Topic topic) throws URISyntaxException {
         log.debug("REST request to save Topic : {}", topic);
@@ -79,6 +82,7 @@ public class TopicResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/topics")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Topic> updateTopic(@RequestBody Topic topic) throws URISyntaxException {
         log.debug("REST request to update Topic : {}", topic);
@@ -99,6 +103,7 @@ public class TopicResource {
      * @return the ResponseEntity with status 200 (OK) and the list of topics in body
      */
     @GetMapping("/topics")
+    @Secured(AuthoritiesConstants.USER)
     @Timed
     public ResponseEntity<List<Topic>> getAllTopics(Pageable pageable) {
         log.debug("REST request to get a page of Topics");
@@ -114,6 +119,7 @@ public class TopicResource {
      * @return the ResponseEntity with status 200 (OK) and with body the topic, or with status 404 (Not Found)
      */
     @GetMapping("/topics/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Topic> getTopic(@PathVariable String id) {
         log.debug("REST request to get Topic : {}", id);
@@ -128,6 +134,7 @@ public class TopicResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/topics/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Void> deleteTopic(@PathVariable String id) {
         log.debug("REST request to delete Topic : {}", id);
@@ -145,6 +152,7 @@ public class TopicResource {
      * @return the result of the search
      */
     @GetMapping("/_search/topics")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<List<Topic>> searchTopics(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Topics for query {}", query);

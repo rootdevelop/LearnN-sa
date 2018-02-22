@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -59,10 +60,9 @@ public class ChallengeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/challenges")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Challenge> createChallenge(@Valid @RequestBody Challenge challenge) throws URISyntaxException {
-
-        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
 
         log.debug("REST request to save Challenge : {}", challenge);
         if (challenge.getId() != null) {
@@ -85,11 +85,9 @@ public class ChallengeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/challenges")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Challenge> updateChallenge(@Valid @RequestBody Challenge challenge) throws URISyntaxException {
-
-        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
-
 
         log.debug("REST request to update Challenge : {}", challenge);
         if (challenge.getId() == null) {
@@ -109,6 +107,7 @@ public class ChallengeResource {
      * @return the ResponseEntity with status 200 (OK) and the list of challenges in body
      */
     @GetMapping("/challenges")
+    @Secured(AuthoritiesConstants.USER)
     @Timed
     public ResponseEntity<List<Challenge>> getAllChallenges(Pageable pageable) {
         log.debug("REST request to get a page of Challenges");
@@ -124,6 +123,7 @@ public class ChallengeResource {
      * @return the ResponseEntity with status 200 (OK) and with body the challenge, or with status 404 (Not Found)
      */
     @GetMapping("/challenges/{id}")
+    @Secured(AuthoritiesConstants.USER)
     @Timed
     public ResponseEntity<Challenge> getChallenge(@PathVariable String id) {
         log.debug("REST request to get Challenge : {}", id);
@@ -138,10 +138,9 @@ public class ChallengeResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/challenges/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Void> deleteChallenge(@PathVariable String id) {
-
-        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) return ResponseEntity.ok(null);
 
         log.debug("REST request to delete Challenge : {}", id);
         challengeRepository.delete(id);
@@ -158,6 +157,7 @@ public class ChallengeResource {
      * @return the result of the search
      */
     @GetMapping("/_search/challenges")
+    @Secured(AuthoritiesConstants.USER)
     @Timed
     public ResponseEntity<List<Challenge>> searchChallenges(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Challenges for query {}", query);

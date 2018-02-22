@@ -35,6 +35,9 @@ export class ExecuteComponent implements OnInit {
     language: string;
     givenAnswer: string;
 
+    multipleChoice: boolean = false;
+    choices: string[] = [];
+
     success: boolean = false;
     lastQuestion: boolean = false;
 
@@ -64,7 +67,8 @@ export class ExecuteComponent implements OnInit {
     }
 
     nextChallenge() {
-        console.log(this.totalQuestions + "-" + this.questionNr);
+        this.multipleChoice = false;
+        this.choices = [];
 
         if (this.subscription) this.subscription.unsubscribe();
         if (this.subscription) this.subscription = null;
@@ -93,7 +97,24 @@ export class ExecuteComponent implements OnInit {
         console.log(this.code);
         this.question = challenge.question;
         this.language = challenge.language;
-        this.answer = challenge.answer;
+
+        let multipleAnswers = challenge.answer.split(",");
+
+        if (multipleAnswers.length > 1) {
+            this.multipleChoice = true;
+            for(let i = 0; i < multipleAnswers.length; i++) {
+
+                let qa = multipleAnswers[i].split("=");
+                this.choices.push(qa[0].trim());
+
+                if (qa.length > 1) {
+                    this.answer = qa[0];
+                }
+            }
+        } else {
+            this.answer = challenge.answer;
+        }
+
         this.topicId = challenge.topic;
 
 
@@ -103,13 +124,11 @@ export class ExecuteComponent implements OnInit {
         }, 100);
 
         let uri = SERVER_API_URL + 'api/challenge-status/' + challenge.id;
-        console.log(uri);
 
         this.http.get(uri).subscribe(data => { this.updateResult(data); });
     }
 
     updateResult(data) {
-        console.log(data);
         if (data.challengeId == this.id && data.result) {
 
             this.givenAnswer = this.answer;
@@ -130,13 +149,13 @@ export class ExecuteComponent implements OnInit {
             page: 0,
             size: 100
         }).subscribe(
-            (res: HttpResponse<Challenge[]>) => this.loadChallenge(res.body, res.headers),
+            (res: HttpResponse<Challenge[]>) => this.loadChallenges(res.body, res.headers),
             (res: HttpErrorResponse) => this.error(res.message)
         );
     }
 
 
-    loadChallenge(body: any, headers: any) {
+    loadChallenges(body: any, headers: any) {
 
         if (body.length === 0) {
             console.log('no questions');
@@ -164,6 +183,10 @@ export class ExecuteComponent implements OnInit {
 
     }
 
+    updateAnswer(event) {
+        this.givenAnswer = event;
+    }
+
     submitAnswer() {
 
         if (this.givenAnswer == "") return;
@@ -181,7 +204,7 @@ export class ExecuteComponent implements OnInit {
                 timeSpent: this.savedTime,
                 result: "SUCCESS"
             }).subscribe((res: HttpResponse<ActivityResult>) =>
-                console.log(res.body), (res: HttpErrorResponse) => console.log(res));
+                console.log("ok"), (res: HttpErrorResponse) => console.error(res));
 
             if (this.questionNr == this.totalQuestions) {
                 console.log("Finished");
@@ -196,7 +219,7 @@ export class ExecuteComponent implements OnInit {
                 timeSpent: this.savedTime,
                 result: "FAIL"
             }).subscribe((res: HttpResponse<ActivityResult>) =>
-                console.log(res.body), (res: HttpErrorResponse) => console.log(res));
+                console.log("ok"), (res: HttpErrorResponse) => console.error(res));
             this.errorMsg = "Whoops, that is not the correct answer";
             this.success = false;
             this.timer = TimerObservable.create(500, 1000);
