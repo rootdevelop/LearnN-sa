@@ -30,6 +30,7 @@ import {
 import {ExecuteComponent} from "./execute/execute.component";
 import { TopicOverviewComponent } from './topic-overview/topic-overview.component';
 import {TopicProgressService} from "./topic-overview/topic-progress.service";
+import { EscapeHtmlPipe } from './shared/escape-html.pipe';
 
 @NgModule({
     imports: [
@@ -51,8 +52,8 @@ import {TopicProgressService} from "./topic-overview/topic-progress.service";
         ActiveMenuDirective,
         FooterComponent,
         ExecuteComponent,
-        TopicOverviewComponent
-    ],
+        TopicOverviewComponent,
+        EscapeHtmlPipe],
     providers: [
         ProfileService,
         PaginationConfig,

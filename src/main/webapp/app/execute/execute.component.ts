@@ -10,6 +10,7 @@ import {TopicService} from "../entities/topic/topic.service";
 import {Topic} from "../entities/topic/topic.model";
 import {ActivatedRoute} from "@angular/router";
 import {SERVER_API_URL} from "../app.constants";
+import {DomSanitizer} from "@angular/platform-browser";
 
 declare const hljs: any;
 
@@ -24,11 +25,12 @@ export class ExecuteComponent implements OnInit {
                 private activityResultService: ActivityResultService,
                 private topicService: TopicService,
                 private route: ActivatedRoute,
-                private http: HttpClient) {
+                private http: HttpClient,
+                private sanitizer: DomSanitizer) {
     }
 
     topic: string;
-    code: string;
+    code: any;
     question: string;
     language: string;
     givenAnswer: string;
@@ -88,6 +90,7 @@ export class ExecuteComponent implements OnInit {
 
         this.id = challenge.id;
         this.code = challenge.snippet;
+        console.log(this.code);
         this.question = challenge.question;
         this.language = challenge.language;
         this.answer = challenge.answer;
