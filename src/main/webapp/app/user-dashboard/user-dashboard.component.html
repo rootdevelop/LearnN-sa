@@ -1,0 +1,27 @@
+<h3>Progress Report : {{user.firstName}} {{user.lastName}}</h3>
+<br>
+
+<ngb-accordion #acc="ngbAccordion">
+    <ngb-panel *ngFor="let item of results" title="{{item.topic}}">
+        <ng-template ngbPanelContent>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Question</th>
+                    <th scope="col">Success</th>
+                    <th scope="col">Failed</th>
+                    <th scope="col">Avg time in seconds</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let question of item.dashboardQuestionResults">
+                    <th scope="row">{{question.question}}</th>
+                    <td style="color: #008b00;"><strong>{{question.success}}</strong></td>
+                    <td style="color: #8f000d;"><strong>{{question.fail}}</strong></td>
+                    <td>{{question.averageTime}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>

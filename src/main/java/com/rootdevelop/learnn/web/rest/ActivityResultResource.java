@@ -1,13 +1,11 @@
 package com.rootdevelop.learnn.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.rootdevelop.learnn.domain.ActivityResult;
+import com.rootdevelop.learnn.domain.*;
 
-import com.rootdevelop.learnn.domain.Challenge;
-import com.rootdevelop.learnn.domain.ChallengeStatus;
-import com.rootdevelop.learnn.domain.TopicProgress;
 import com.rootdevelop.learnn.repository.ActivityResultRepository;
 import com.rootdevelop.learnn.repository.ChallengeRepository;
+import com.rootdevelop.learnn.repository.TopicRepository;
 import com.rootdevelop.learnn.repository.search.ActivityResultSearchRepository;
 import com.rootdevelop.learnn.security.AuthoritiesConstants;
 import com.rootdevelop.learnn.security.SecurityUtils;
@@ -15,6 +13,8 @@ import com.rootdevelop.learnn.web.rest.errors.BadRequestAlertException;
 import com.rootdevelop.learnn.web.rest.util.HeaderUtil;
 import com.rootdevelop.learnn.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import lombok.experimental.var;
+import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -29,6 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,12 +54,16 @@ public class ActivityResultResource {
 
     private final ChallengeRepository challengeRepository;
 
+    private final TopicRepository topicRepository;
+
     public ActivityResultResource(ActivityResultRepository activityResultRepository,
                                   ActivityResultSearchRepository activityResultSearchRepository,
-                                  ChallengeRepository challengeRepository) {
+                                  ChallengeRepository challengeRepository,
+                                  TopicRepository topicRepository) {
         this.activityResultRepository = activityResultRepository;
         this.activityResultSearchRepository = activityResultSearchRepository;
         this.challengeRepository = challengeRepository;
+        this.topicRepository = topicRepository;
     }
 
     /**
@@ -83,7 +88,7 @@ public class ActivityResultResource {
         ActivityResult result = activityResultRepository.save(activityResult);
         activityResultSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/activity-results/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId()))
             .body(result);
     }
 
@@ -110,7 +115,7 @@ public class ActivityResultResource {
         ActivityResult result = activityResultRepository.save(activityResult);
         activityResultSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, activityResult.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, activityResult.getId()))
             .body(result);
     }
 
@@ -235,4 +240,76 @@ public class ActivityResultResource {
         return challengeStatus;
     }
 
+
+    @GetMapping("/user-dashboard/{user}")
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ArrayList<DashboardTopicOverview> getUserDashboard(@PathVariable String user) {
+
+        val result = new ArrayList<DashboardQuestionResult>();
+        val activityResults = this.activityResultRepository.findAllByUser(user);
+
+        for (var activityResult : activityResults) {
+
+            val challenge = this.challengeRepository.findOne(activityResult.getChallengeId());
+
+            var found = false;
+            for (var item : result) {
+                if (item.getQuestion().equals(challenge.getQuestion())) {
+
+                    if (activityResult.getResult().equals("SUCCESS")) item.setSuccess(item.getSuccess() + 1);
+                    if (activityResult.getResult().equals("FAIL")) item.setFail(item.getFail() + 1);
+
+                    var count = item.getSuccess() + item.getFail();
+                    var avgTime = ((item.getAverageTime() * (count - 1)) + activityResult.getTimeSpent()) / count;
+
+                    item.setAverageTime(avgTime);
+
+                    found = true;
+                    break;
+                }
+            }
+
+            if (challenge != null && !found) {
+                var item = new DashboardQuestionResult();
+                item.setQuestion(challenge.getQuestion());
+                item.setTopic(this.topicRepository.findOne(challenge.getTopic()).getName());
+                item.setAverageTime(activityResult.getTimeSpent());
+
+                if (activityResult.getResult().equals("SUCCESS")) item.setSuccess(1);
+                if (activityResult.getResult().equals("FAIL")) item.setFail(1);
+
+                result.add(item);
+            }
+        }
+
+
+        var topicResult = new ArrayList<DashboardTopicOverview>();
+
+        for (var item : result) {
+
+            var found = false;
+
+            for(var topic : topicResult) {
+
+                if (topic.getTopic().equals(item.getTopic())) {
+                    topic.getDashboardQuestionResults().add(item);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                var topic = new DashboardTopicOverview();
+                topic.getDashboardQuestionResults().add(item);
+                topic.setTopic(item.getTopic());
+                topicResult.add(topic);
+            }
+
+        }
+
+
+        return topicResult;
+    }
+
 }
+

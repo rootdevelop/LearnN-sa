@@ -31,17 +31,22 @@ import {ExecuteComponent} from "./execute/execute.component";
 import { TopicOverviewComponent } from './topic-overview/topic-overview.component';
 import {TopicProgressService} from "./topic-overview/topic-progress.service";
 import { EscapeHtmlPipe } from './shared/escape-html.pipe';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { QuestionDashboardComponent } from './question-dashboard/question-dashboard.component';
+import {ChartsModule} from "ng2-charts";
 
 @NgModule({
     imports: [
         BrowserModule,
         LearnNAppRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
+        ChartsModule,
         LearnNSharedModule,
         LearnNHomeModule,
         LearnNAdminModule,
         LearnNAccountModule,
-        LearnNEntityModule
+        LearnNEntityModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -53,7 +58,10 @@ import { EscapeHtmlPipe } from './shared/escape-html.pipe';
         FooterComponent,
         ExecuteComponent,
         TopicOverviewComponent,
-        EscapeHtmlPipe],
+        EscapeHtmlPipe,
+        DashboardComponent,
+        UserDashboardComponent,
+        QuestionDashboardComponent],
     providers: [
         ProfileService,
         PaginationConfig,
