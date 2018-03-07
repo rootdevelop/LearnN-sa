@@ -1,6 +1,6 @@
 <h3>Progress Report : {{user.firstName}} {{user.lastName}}</h3>
 <br>
-
+<p *ngIf="(results.length == 0)">No results for this user</p>
 <ngb-accordion #acc="ngbAccordion">
     <ngb-panel *ngFor="let item of results" title="{{item.topic}}">
         <ng-template ngbPanelContent>
