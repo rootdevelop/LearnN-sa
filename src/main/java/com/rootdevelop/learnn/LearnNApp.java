@@ -3,6 +3,7 @@ package com.rootdevelop.learnn;
 import com.rootdevelop.learnn.config.ApplicationProperties;
 import com.rootdevelop.learnn.config.DefaultProfileUtil;
 
+import com.rootdevelop.learnn.domain.User;
 import io.github.jhipster.config.JHipsterConstants;
 
 import org.slf4j.Logger;
@@ -17,8 +18,10 @@ import org.springframework.core.env.Environment;
 import javax.annotation.PostConstruct;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
@@ -67,6 +70,8 @@ public class LearnNApp {
         if (env.getProperty("server.ssl.key-store") != null) {
             protocol = "https";
         }
+
+
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application '{}' is running! Access URLs:\n\t" +
                 "Local: \t\t{}://localhost:{}\n\t" +
@@ -79,5 +84,8 @@ public class LearnNApp {
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
             env.getActiveProfiles());
+
+
+
     }
 }

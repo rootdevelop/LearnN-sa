@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,6 +25,7 @@ public class Topic implements Serializable {
 
     @Field("description")
     private String description;
+
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {

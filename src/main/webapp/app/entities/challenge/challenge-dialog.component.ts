@@ -9,8 +9,8 @@ import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 import { Challenge } from './challenge.model';
 import { ChallengePopupService } from './challenge-popup.service';
 import { ChallengeService } from './challenge.service';
-import {TopicService} from "../topic/topic.service";
-import {Topic} from "../topic/topic.model";
+import {TopicService} from '../topic/topic.service';
+import {Topic} from '../topic/topic.model';
 
 @Component({
     selector: 'jhi-challenge-dialog',

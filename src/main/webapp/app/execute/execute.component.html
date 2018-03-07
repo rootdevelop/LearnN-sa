@@ -22,7 +22,8 @@
 <div class="row">
     <div class="col-md-6">
         <pre style="background-color: #333333;" id="code">
-            <code id="snippet" class="{{language}}" [innerHTML]="code"></code>
+            <code id="snippet" class="{{language}}" *ngIf="language == 'xml' || language == 'html'">{{code}}</code>
+            <code id="snippet" class="{{language}}" *ngIf="language != 'xml' && language != 'html'" [innerHTML]="code"></code>
         </pre>
     </div>
     <div class="col-md-6">

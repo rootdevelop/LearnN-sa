@@ -7,7 +7,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { ActivityResult } from './activity-result.model';
 import { ActivityResultService } from './activity-result.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
-import {ChallengeService} from "../challenge/challenge.service";
+import {ChallengeService} from '../challenge/challenge.service';
 
 @Component({
     selector: 'jhi-activity-result',

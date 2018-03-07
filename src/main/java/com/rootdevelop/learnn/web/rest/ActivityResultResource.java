@@ -1,13 +1,11 @@
 package com.rootdevelop.learnn.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.rootdevelop.learnn.domain.ActivityResult;
+import com.rootdevelop.learnn.domain.*;
 
-import com.rootdevelop.learnn.domain.Challenge;
-import com.rootdevelop.learnn.domain.ChallengeStatus;
-import com.rootdevelop.learnn.domain.TopicProgress;
 import com.rootdevelop.learnn.repository.ActivityResultRepository;
 import com.rootdevelop.learnn.repository.ChallengeRepository;
+import com.rootdevelop.learnn.repository.TopicRepository;
 import com.rootdevelop.learnn.repository.search.ActivityResultSearchRepository;
 import com.rootdevelop.learnn.security.AuthoritiesConstants;
 import com.rootdevelop.learnn.security.SecurityUtils;
@@ -29,10 +27,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -53,12 +51,16 @@ public class ActivityResultResource {
 
     private final ChallengeRepository challengeRepository;
 
+    private final TopicRepository topicRepository;
+
     public ActivityResultResource(ActivityResultRepository activityResultRepository,
                                   ActivityResultSearchRepository activityResultSearchRepository,
-                                  ChallengeRepository challengeRepository) {
+                                  ChallengeRepository challengeRepository,
+                                  TopicRepository topicRepository) {
         this.activityResultRepository = activityResultRepository;
         this.activityResultSearchRepository = activityResultSearchRepository;
         this.challengeRepository = challengeRepository;
+        this.topicRepository = topicRepository;
     }
 
     /**
@@ -83,7 +85,7 @@ public class ActivityResultResource {
         ActivityResult result = activityResultRepository.save(activityResult);
         activityResultSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/activity-results/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId()))
             .body(result);
     }
 
@@ -110,7 +112,7 @@ public class ActivityResultResource {
         ActivityResult result = activityResultRepository.save(activityResult);
         activityResultSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, activityResult.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, activityResult.getId()))
             .body(result);
     }
 
@@ -235,4 +237,76 @@ public class ActivityResultResource {
         return challengeStatus;
     }
 
+
+    @GetMapping("/user-dashboard/{user}")
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ArrayList<DashboardTopicOverview> getUserDashboard(@PathVariable String user) {
+
+        ArrayList<DashboardQuestionResult> result = new ArrayList<>();
+        Iterable<ActivityResult> activityResults = this.activityResultRepository.findAllByUser(user);
+
+        for (ActivityResult activityResult : activityResults) {
+
+            Challenge challenge = this.challengeRepository.findOne(activityResult.getChallengeId());
+
+            boolean found = false;
+            for (DashboardQuestionResult item : result) {
+                if (item.getQuestion().equals(challenge.getQuestion())) {
+
+                    if (activityResult.getResult().equals("SUCCESS")) item.setSuccess(item.getSuccess() + 1);
+                    if (activityResult.getResult().equals("FAIL")) item.setFail(item.getFail() + 1);
+
+                    int count = item.getSuccess() + item.getFail();
+                    int avgTime = ((item.getAverageTime() * (count - 1)) + activityResult.getTimeSpent()) / count;
+
+                    item.setAverageTime(avgTime);
+
+                    found = true;
+                    break;
+                }
+            }
+
+            if (challenge != null && !found) {
+                DashboardQuestionResult item = new DashboardQuestionResult();
+                item.setQuestion(challenge.getQuestion());
+                item.setTopic(this.topicRepository.findOne(challenge.getTopic()).getName());
+                item.setAverageTime(activityResult.getTimeSpent());
+
+                if (activityResult.getResult().equals("SUCCESS")) item.setSuccess(1);
+                if (activityResult.getResult().equals("FAIL")) item.setFail(1);
+
+                result.add(item);
+            }
+        }
+
+
+        ArrayList<DashboardTopicOverview> topicResult = new ArrayList<>();
+
+        for (DashboardQuestionResult item : result) {
+
+            boolean found = false;
+
+            for(DashboardTopicOverview topic : topicResult) {
+
+                if (topic.getTopic().equals(item.getTopic())) {
+                    topic.getDashboardQuestionResults().add(item);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                DashboardTopicOverview topic = new DashboardTopicOverview();
+                topic.getDashboardQuestionResults().add(item);
+                topic.setTopic(item.getTopic());
+                topicResult.add(topic);
+            }
+
+        }
+
+
+        return topicResult;
+    }
+
 }
+
