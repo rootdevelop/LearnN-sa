@@ -12,4 +12,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 @Repository
 public interface ActivityResultRepository extends MongoRepository<ActivityResult, String> {
     ActivityResult findByUserAndChallengeIdAndResult(String user, String challengeId, String result);
+
+    Iterable<ActivityResult> findAllByUser(String user);
+
 }

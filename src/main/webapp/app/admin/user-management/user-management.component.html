@@ -44,6 +44,11 @@
                 <td>{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
+                        <button [routerLink]="['/dashboard/', user.login]"
+                                class="btn btn-secondary btn-sm">
+                            <span class="fa fa-laptop"></span>
+                            <span class="d-none d-md-inline">Dashboard</span>
+                        </button>
                         <button type="submit"
                                 [routerLink]="['../user-management', user.login]"
                                 class="btn btn-info btn-sm">
